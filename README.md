@@ -57,7 +57,13 @@ The typical tree will look like this:
 		    name
 ~~~
 
-This filesystem won't be unmounted when any particular neovim instance exists,
+As you can see, at the toplevel there is the `clients/` directory. In it there
+is a file called `new`, and a series of numbered directories, each representing
+a neovim client. To register a new client, you can write the path to the client
+socket to the `new` file, which will initialize the corresponding subdirectory
+(the plugin does this automatically for every new client).
+
+The filesystem won't be unmounted when any particular neovim instance exists,
 and the plugin will try to manage it so its contents are in sync with the
 running neovim instances. This means it can be used to manage several neovim
 instances at once: for example, to query if any instance is editing a file
@@ -66,6 +72,8 @@ matching `buffer.py`, you can use the typical unix tools:
 ~~~ sh
     $ cd clients/
     $ grep -r "buffer.py" . --exclude new
+    ./2/buffers/10/name:/home/felipe/devel/project/dir/buffer.py
+    ./3/buffers/2/name:/home/felipe/devel/toy/newbuffer.py
 ~~~
 
 You can send commands to the running nvim instances by writing to the `cmd`
