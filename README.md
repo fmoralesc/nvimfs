@@ -2,6 +2,13 @@
 
 A FUSE filesystem that exposes the Neovim API.
 
+## Dependencies
+
+* FUSE
+* Neovim
+* Python 3 (tested using 3.4)
+* `python-neovim` for Python 3 (`pip3 install neovim`)
+
 ## Setup
 
 First, install in your 'runtimepath'. Using a plugin manager like [vim-plug][],
@@ -54,11 +61,11 @@ This filesystem won't be unmounted when any particular neovim instance exists,
 and the plugin will try to manage it so its contents are in sync with the
 running neovim instances. This means it can be used to manage several neovim
 instances at once: for example, to query if any instance is editing a file
-matching 'buffer.py', you can use the typical unix tools:
+matching `buffer.py`, you can use the typical unix tools:
 
 ~~~ sh
     $ cd clients/
-    $ grep -r "test4" . --exclude new
+    $ grep -r "buffer.py" . --exclude new
 ~~~
 
 You can send commands to the running nvim instances by writing to the `cmd`
