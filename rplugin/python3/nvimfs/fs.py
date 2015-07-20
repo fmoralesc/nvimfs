@@ -3,11 +3,14 @@ import neovim
 import re
 from collections import defaultdict, namedtuple
 from os import environ
-from os.path import basename, dirname, join, isfile
+from os.path import basename, dirname, join, isfile, exists
 from errno import ENOENT
 from stat import *
 from time import time
-from nvimfs.fuse import FUSE, FuseOSError, Operations
+try:
+    from nvimfs.fuse import FUSE, FuseOSError, Operations
+except:
+    from fuse import FUSE, FuseOSError, Operations
 
 OBuffer = namedtuple('OBuffer', 'name')
 
@@ -82,6 +85,16 @@ class OxberryFS(Operations):
             if name != b'':
                 return name.decode()
 
+    def reap_clients_if_needed(self, address):
+        for f in self.files:
+            m = re.match('/clients/\d+/name', f)
+            if m:
+                name = self.data[m.group()]
+                if name != b'':
+                    if not exists(name):
+                        self.rmdir(dirname(f))
+                        break
+
     def chmod(self, path, mode):
         self.files[path]['st_mode'] &= 0o0770000
         self.files[path]['st_mode'] |= mode
@@ -136,6 +149,7 @@ class OxberryFS(Operations):
         return self.data[path][offset:offset + size]
 
     def readdir(self, path, fh):
+        self.reap_clients_if_needed(path)
         files = [basename(x[1:]) for x in self.files \
                                         if x != '/' \
                                         and dirname(x) == path \
@@ -157,8 +171,12 @@ class OxberryFS(Operations):
         self.files[new] = self.files.pop(old)
 
     def rmdir(self, path):
-        self.files.pop(path)
-        self.files['/']['st_nlink'] -= 1
+        # FIXME: handle files within the directories, and remove data too
+        try:
+            self.files.pop(path)
+            self.files['/']['st_nlink'] -= 1
+        except KeyError:
+            pass
 
     def setxattr(self, path, name, value, options, position=0):
         # Ignore options
