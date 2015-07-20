@@ -92,7 +92,7 @@ class OxberryFS(Operations):
                 name = self.data[m.group()]
                 if name != b'':
                     if not exists(name):
-                        self.rmdir(dirname(f))
+                        self.rmdir(dirname(m.group()))
                         break
 
     def chmod(self, path, mode):
