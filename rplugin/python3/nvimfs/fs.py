@@ -7,10 +7,7 @@ from os.path import basename, dirname, join, isfile
 from errno import ENOENT
 from stat import *
 from time import time
-try:
-    from nvimfs.fuse import FUSE, FuseOSError, Operations
-except:
-    from fuse import FUSE, FuseOSError, Operations
+from nvimfs.fuse import FUSE, FuseOSError, Operations
 
 OBuffer = namedtuple('OBuffer', 'name')
 
