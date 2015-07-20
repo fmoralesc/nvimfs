@@ -256,3 +256,5 @@ if __name__ == '__main__':
     from sys import argv
     if 'NVIM_LISTEN_ADDRESS' in environ:
         fuse = FUSE(OxberryFS(environ['NVIM_LISTEN_ADDRESS'], argv[1]), argv[1], foreground=True)
+    else:
+        fuse = FUSE(OxberryFS(), argv[1], foreground=True)
