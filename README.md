@@ -45,16 +45,24 @@ The nvim filesystem will be mounted by default on `&rtp[0]` (typically,
 The typical tree will look like this:
 
 ~~~
-    /clients
-	new
-	0/
-	   name
-	   cmd
-	   eval
-	   buffers/
-		new
-		1/
-		    name
+neovimfs/
+└── clients
+    ├── 0
+    │   ├── buffers
+    │   │   ├── 1
+    │   │   │   ├── name
+    │   │   │   └── tags
+    │   │   ├── 2
+    │   │   │   ├── name
+    │   │   │   └── tags
+    │   │   └── new
+    │   ├── cmd
+    │   ├── eval
+    │   ├── name
+    │   └── windows
+    │       └── new
+    └── new
+
 ~~~
 
 As you can see, at the toplevel there is the `clients/` directory. In it there
