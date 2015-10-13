@@ -31,7 +31,7 @@ plugin][remote-plugin] with
 :UpdateRemotePlugins
 ~~~
 
-and finally, restart Nevim.
+and finally, restart Neovim.
 
 [vim-plug]: https://github.com/junegunn/vim-plug
 
